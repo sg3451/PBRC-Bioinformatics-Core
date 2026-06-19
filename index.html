@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bioinformatics & Computational Biology Core – PBRC</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:  #0B1628;
+    --teal:  #00BFA6;
+    --teal2: #00D9BF;
+    --white: #FFFFFF;
+    --off:   #F5F7FA;
+    --text:  #1A2540;
+    --muted: #5A6A88;
+    --border:#E2E8F4;
+    --card-shadow: 0 1px 4px rgba(11,22,40,0.07);
+    --radius: 10px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; color: var(--text); background: var(--white); line-height: 1.65; font-size: 16px; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(11,22,40,0.96); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0,191,166,0.15); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; }
+  .nav-brand { font-size: 14px; font-weight: 600; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  .nav-brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+  .nav-links { display: flex; }
+  .nav-links a { font-size: 13px; color: rgba(255,255,255,0.65); text-decoration: none; padding: 0 1rem; height: 56px; display: flex; align-items: center; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--teal); }
+  .nav-links a.active { color: var(--white); border-bottom: 2px solid var(--teal); }
+  #home { min-height: 100vh; background: var(--navy); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; padding-top: 56px; }
+  .hero-inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 5rem 2rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; color: var(--teal); text-transform: uppercase; margin-bottom: 1.25rem; }
+  .hero-title { font-size: clamp(2rem,4vw,3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 1.25rem; letter-spacing: -0.02em; }
+  .hero-title span { color: var(--teal); }
+  .hero-subtitle { font-size: 1.05rem; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 2rem; max-width: 480px; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--teal); color: var(--navy); font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 24px; border-radius: 6px; transition: background 0.15s, transform 0.1s; }
+  .hero-cta:hover { background: var(--teal2); transform: translateY(-1px); }
+  .hero-cta svg { width: 16px; height: 16px; }
+  #helixCanvas { position: absolute; right: 0; top: 0; bottom: 0; width: 50%; opacity: 0.18; pointer-events: none; }
+  .hero-stats { display: flex; gap: 2rem; margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+  .stat-num { font-size: 1.75rem; font-weight: 700; color: var(--teal); line-height: 1; }
+  .stat-label { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .hero-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(0,191,166,0.2); border-radius: 14px; padding: 2rem; }
+  .hero-card h3 { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 1.25rem; }
+  .service-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+  .service-list li { font-size: 13.5px; color: rgba(255,255,255,0.75); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+  .service-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex-shrink: 0; margin-top: 6px; }
+  .section-wrap { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+  .section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; color: var(--teal); text-transform: uppercase; margin-bottom: 0.75rem; }
+  .section-title { font-size: clamp(1.5rem,2.5vw,2rem); font-weight: 700; color: var(--text); line-height: 1.25; margin-bottom: 0.75rem; letter-spacing: -0.015em; }
+  .section-sub { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.7; }
+  #about { background: var(--white); }
+  .about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+  .about-body { font-size: 15px; color: var(--muted); line-height: 1.8; }
+  .about-body p + p { margin-top: 1rem; }
+  .highlight-box { background: var(--navy); border-radius: 12px; padding: 2rem; color: rgba(255,255,255,0.8); }
+  .highlight-box h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+  .highlight-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .highlight-list li { font-size: 13.5px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+  .highlight-list li::before { content: '→'; color: var(--teal); flex-shrink: 0; font-size: 12px; margin-top: 2px; }
+  #databases { background: var(--off); }
+  .db-header-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 3rem; margin-bottom: 1.5rem; }
+  .db-search-wrap { position: relative; }
+  .db-search-wrap input { font-size: 13px; padding: 9px 14px 9px 36px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); width: 240px; outline: none; transition: border-color 0.15s; }
+  .db-search-wrap input:focus { border-color: var(--teal); }
+  .db-search-wrap svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--muted); pointer-events: none; }
+  .tabs-scroll { overflow-x: auto; padding-bottom: 2px; }
+  .tabs { display: flex; gap: 4px; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 4px; width: max-content; min-width: 100%; }
+  .tab-btn { font-size: 12.5px; font-weight: 500; color: var(--muted); padding: 7px 14px; border-radius: 7px; border: none; background: transparent; cursor: pointer; white-space: nowrap; transition: background 0.12s, color 0.12s; display: flex; align-items: center; gap: 6px; }
+  .tab-btn .tab-count { font-size: 11px; background: var(--border); color: var(--muted); padding: 1px 6px; border-radius: 10px; font-weight: 600; transition: background 0.12s, color 0.12s; }
+  .tab-btn:hover:not(.active) { background: var(--off); color: var(--text); }
+  .tab-btn.active { background: var(--navy); color: var(--white); }
+  .tab-btn.active .tab-count { background: rgba(0,191,166,0.25); color: var(--teal); }
+  .db-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 12px; margin-top: 1.25rem; }
+  .db-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1.25rem; text-decoration: none; display: block; transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s; box-shadow: var(--card-shadow); }
+  .db-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(0,191,166,0.12); transform: translateY(-2px); }
+  .db-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 0.6rem; }
+  .db-name { font-size: 13.5px; font-weight: 600; color: var(--text); line-height: 1.35; }
+  .db-ext-icon { color: var(--muted); flex-shrink: 0; margin-top: 2px; transition: color 0.15s; }
+  .db-card:hover .db-ext-icon { color: var(--teal); }
+  .db-desc { font-size: 12.5px; color: var(--muted); line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .db-pub { margin-top: 0.75rem; font-size: 11px; color: #94A3B8; display: flex; align-items: center; gap: 5px; }
+  .db-pub svg { width: 11px; height: 11px; flex-shrink: 0; }
+  .db-meta { font-size: 12px; color: var(--muted); margin-top: 0.5rem; }
+  .no-results, .loading { grid-column: 1/-1; text-align: center; padding: 3rem; font-size: 14px; color: var(--muted); }
+  #contact { background: var(--white); }
+  .contact-card { margin-top: 2.5rem; background: var(--navy); border-radius: 14px; padding: 2.5rem 3rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .contact-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; }
+  .contact-name { font-size: 1.15rem; font-weight: 700; color: var(--white); margin-bottom: 0.35rem; }
+  .contact-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 480px; }
+  .contact-email-btn { display: inline-flex; align-items: center; gap: 9px; background: var(--teal); color: var(--navy); font-size: 14px; font-weight: 600; text-decoration: none; padding: 13px 24px; border-radius: 8px; white-space: nowrap; transition: background 0.15s, transform 0.1s; flex-shrink: 0; }
+  .contact-email-btn:hover { background: var(--teal2); transform: translateY(-1px); }
+  .contact-email-btn svg { width: 16px; height: 16px; }
+  footer { background: var(--navy); padding: 2.5rem 2rem; text-align: center; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-brand { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 0.4rem; }
+  .footer-sub { font-size: 12.5px; color: rgba(255,255,255,0.35); }
+  .footer-teal { color: var(--teal); font-weight: 500; }
+  @media (max-width: 768px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-card { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    #helixCanvas { width: 100%; opacity: 0.08; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#home"><span class="dot"></span>PBRC Bioinformatics Core</a>
+  <div class="nav-links">
+    <a href="#home" class="active">Home</a>
+    <a href="#about">About</a>
+    <a href="#databases">Databases</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section id="home">
+  <canvas id="helixCanvas"></canvas>
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow">Pennington Biomedical Research Center</p>
+      <h1 class="hero-title">Bioinformatics &amp;<br><span>Computational</span><br>Biology Core</h1>
+      <p class="hero-subtitle">Advancing big data research for big questions in nutrition and metabolism.</p>
+      <a class="hero-cta" href="#databases">
+        Browse databases
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </a>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num" id="statDbs">—</div><div class="stat-label">Curated databases</div></div>
+        <div class="stat-item"><div class="stat-num" id="statCats">—</div><div class="stat-label">Omics categories</div></div>
+        <div class="stat-item"><div class="stat-num">2026</div><div class="stat-label">Last updated</div></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>Services offered</h3>
+      <ul class="service-list">
+        <li>Analysis and interpretation of next-generation sequencing data (RNA-Seq, ChIP-Seq, ATAC-Seq, DNA methylation)</li>
+        <li>Multi-omics analysis — genomics, proteomics, metabolomics and microbiome data</li>
+        <li>Single-cell multi-omics (scRNA-Seq, scATAC-Seq)</li>
+        <li>Predictive modeling via machine learning and artificial intelligence</li>
+        <li>Scalable analysis via high-performance computing (HPC)</li>
+        <li>Grant and manuscript writing support</li>
+        <li>Bioinformatics education, training and research collaborations</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-wrap">
+    <p class="section-eyebrow">Who we are</p>
+    <h2 class="section-title">Powering discovery through computational science</h2>
+    <p class="section-sub">We partner with researchers across PBRC to design, execute, and interpret complex multi-omics studies — from experimental design to final publication.</p>
+    <div class="about-grid">
+      <div class="about-body">
+        <p>The Bioinformatics and Computational Biology Core supports investigators at the Pennington Biomedical Research Center by providing expert data science, statistical analysis, and bioinformatics services tailored to nutrition and metabolic disease research.</p>
+        <p>Our team works across the full data lifecycle: study design, sequencing data processing, multi-omics integration, machine learning modeling, and visualization — with a commitment to reproducible, publication-ready science.</p>
+        <p>We maintain a curated directory of the most relevant public databases in single-cell sequencing, epigenomics, proteomics, metabolomics, and more — accessible via this site — to support researchers in finding the right data resources for their projects.</p>
+      </div>
+      <div class="highlight-box">
+        <h4>What we offer</h4>
+        <ul class="highlight-list">
+          <li>NGS data analysis: RNA-Seq, ChIP-Seq, ATAC-Seq, DNA methylation</li>
+          <li>Multi-omics integration across genomics, proteomics, metabolomics</li>
+          <li>Single-cell analysis: scRNA-Seq, scATAC-Seq</li>
+          <li>Machine learning and AI-based predictive modeling</li>
+          <li>High-performance computing (HPC) pipelines</li>
+          <li>Grant and manuscript writing support</li>
+          <li>Ongoing education, training and collaborative research</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="databases">
+  <div class="section-wrap">
+    <p class="section-eyebrow">Resource directory</p>
+    <h2 class="section-title">Bioinformatics databases</h2>
+    <p class="section-sub">Curated public databases organized by omics category. Click any card to visit the resource directly.</p>
+    <div class="db-header-row">
+      <div class="tabs-scroll"><div class="tabs" id="tabsBar"></div></div>
+      <div class="db-search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search databases…" autocomplete="off">
+      </div>
+    </div>
+    <div class="db-meta" id="dbMeta"></div>
+    <div class="db-grid" id="dbGrid"><div class="loading">Loading databases…</div></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-wrap">
+    <p class="section-eyebrow">Get in touch</p>
+    <h2 class="section-title">Contact us</h2>
+    <p class="section-sub">Interested in collaborating or have questions about our services? We'd love to hear from you.</p>
+    <div class="contact-card">
+      <div class="contact-text">
+        <div class="contact-label">Principal Investigator</div>
+        <div class="contact-name">Prof. Sujoy Ghosh</div>
+        <div class="contact-desc">For additional queries about data analysis and bioinformatics services, please reach out directly by email.</div>
+      </div>
+      <a class="contact-email-btn" href="mailto:sujoy.ghosh@pbrc.edu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        sujoy.ghosh@pbrc.edu
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Bioinformatics &amp; Computational Biology Core</div>
+    <div class="footer-sub">Pennington Biomedical Research Center &nbsp;·&nbsp; <span class="footer-teal">PBRC</span> &nbsp;·&nbsp; Baton Rouge, Louisiana</div>
+  </div>
+</footer>
+
+<script>
+let DB_DATA = {}, currentTab = '', searchVal = '';
+
+fetch('databases.json')
+  .then(r => r.json())
+  .then(data => { DB_DATA = data; init(); })
+  .catch(() => {
+    document.getElementById('dbGrid').innerHTML = '<div class="no-results">Could not load databases.json — make sure it is uploaded to the same folder as index.html.</div>';
+  });
+
+function init() {
+  const keys = Object.keys(DB_DATA);
+  currentTab = keys[0];
+  const total = keys.reduce((s, k) => s + DB_DATA[k].entries.length, 0);
+  document.getElementById('statDbs').textContent = total + '+';
+  document.getElementById('statCats').textContent = keys.length;
+  const tabsBar = document.getElementById('tabsBar');
+  keys.forEach((key, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+    btn.dataset.tab = key;
+    btn.innerHTML = DB_DATA[key].label + ' <span class="tab-count">' + DB_DATA[key].entries.length + '</span>';
+    tabsBar.appendChild(btn);
+  });
+  tabsBar.addEventListener('click', e => {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTab = btn.dataset.tab;
+    renderGrid();
+  });
+  document.getElementById('searchInput').addEventListener('input', e => { searchVal = e.target.value; renderGrid(); });
+  renderGrid();
+}
+
+function renderGrid() {
+  const grid = document.getElementById('dbGrid');
+  const meta = document.getElementById('dbMeta');
+  let entries = DB_DATA[currentTab].entries;
+  if (searchVal) {
+    const q = searchVal.toLowerCase();
+    entries = entries.filter(e => e.name.toLowerCase().includes(q) || e.desc.toLowerCase().includes(q));
+  }
+  meta.textContent = entries.length + ' database' + (entries.length !== 1 ? 's' : '') + ' in ' + DB_DATA[currentTab].label;
+  if (!entries.length) { grid.innerHTML = '<div class="no-results">No databases match "<strong>' + searchVal + '</strong>"</div>'; return; }
+  grid.innerHTML = entries.map(e => `
+    <a class="db-card" href="${e.url}" target="_blank" rel="noopener noreferrer">
+      <div class="db-card-top">
+        <span class="db-name">${e.name}</span>
+        <svg class="db-ext-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </div>
+      <div class="db-desc">${e.desc}</div>
+      ${e.pub ? `<div class="db-pub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>DOI: ${e.pub}</div>` : ''}
+    </a>`).join('');
+}
+
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = ['home','about','databases','contact'];
+window.addEventListener('scroll', () => {
+  let current = 'home';
+  sections.forEach(id => { const el = document.getElementById(id); if (el && window.scrollY >= el.offsetTop - 80) current = id; });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+}, { passive: true });
+
+(function() {
+  const canvas = document.getElementById('helixCanvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = canvas.offsetWidth*devicePixelRatio; canvas.height = canvas.offsetHeight*devicePixelRatio; ctx.scale(devicePixelRatio, devicePixelRatio); }
+  window.addEventListener('resize', resize); resize();
+  let t = 0;
+  (function draw() {
+    const W = canvas.offsetWidth, H = canvas.offsetHeight;
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2, amp=W*0.28, freq=0.012;
+    for (let i=0; i<200; i++) {
+      const y=(i/200)*H, phase=y*freq+t;
+      const x1=cx+Math.sin(phase)*amp, x2=cx+Math.sin(phase+Math.PI)*amp;
+      const alpha=0.15+0.5*Math.abs(Math.sin(phase));
+      if (i>0) {
+        const py=((i-1)/200)*H, px1=cx+Math.sin(py*freq+t)*amp, px2=cx+Math.sin(py*freq+t+Math.PI)*amp;
+        ctx.beginPath(); ctx.moveTo(px1,py); ctx.lineTo(x1,y); ctx.strokeStyle=`rgba(0,191,166,${alpha*0.6})`; ctx.lineWidth=1.5; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(px2,py); ctx.lineTo(x2,y); ctx.strokeStyle=`rgba(0,145,210,${alpha*0.5})`; ctx.lineWidth=1.5; ctx.stroke();
+      }
+      if (i%10===0) {
+        ctx.beginPath(); ctx.moveTo(x1,y); ctx.lineTo(x2,y); ctx.strokeStyle=`rgba(255,255,255,${alpha*0.25})`; ctx.lineWidth=1; ctx.stroke();
+        [x1,x2].forEach(x => { ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fillStyle=`rgba(0,191,166,${alpha*0.8})`; ctx.fill(); });
+      }
+    }
+    t+=0.008; requestAnimationFrame(draw);
+  })();
+})();
+</script>
+</body>
+</html>

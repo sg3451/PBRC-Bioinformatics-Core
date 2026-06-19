@@ -1,0 +1,112 @@
+{
+  "single_cell_sequencing": {
+    "label": "Single-cell",
+    "entries": [
+      { "name": "Single Cell Portal", "url": "https://singlecell.broadinstitute.org/single_cell", "desc": "Reducing barriers and accelerating single-cell research.", "pub": "" },
+      { "name": "UCSC Cell Browser", "url": "https://genome.ucsc.edu/singlecell.html", "desc": "Published datasets as tracks and a new data exploration tool for single-cell data.", "pub": "10.1093/nar/gkac1072" },
+      { "name": "CZ CellxGene", "url": "https://cellxgene.cziscience.com/", "desc": "Fast, easy access to the largest collection of standardized single-cell data — 50M+ cells and growing.", "pub": "" },
+      { "name": "PanglaoDB", "url": "https://panglaodb.se/", "desc": "Database for exploring single-cell RNA sequencing experiments from mouse and human.", "pub": "10.1093/database/baz046" },
+      { "name": "CellSTAR", "url": "https://idrblab.org/cellstar", "desc": "Comprehensive annotated reference data for annotating hundreds of cell types, including tens of thousands of gene markers.", "pub": "10.1093/nar/gkad874" },
+      { "name": "Single Cell Atlas", "url": "https://www.singlecellatlas.org/", "desc": "Multi-omics atlas presenting a comprehensive overview of healthy human tissues with bioinformatics tools.", "pub": "10.1186/s13059-024-03246-2" },
+      { "name": "ssREAD", "url": "https://bmblx.bmi.osumc.edu/ssread/", "desc": "Single-cell and spatial RNA-seq database for Alzheimer's Disease research.", "pub": "" },
+      { "name": "scRNASeqDB", "url": "https://bioinfo.uth.edu/scrnaseqdb/", "desc": "Contains 36 human single-cell gene expression datasets from GEO, involving 8,910 cells from 174 cell groups.", "pub": "10.1101/104810" },
+      { "name": "Cell Types Database", "url": "https://portal.brain-map.org/atlases-and-data/rnaseq", "desc": "Characterizes cortical diversity at the cellular level for multiple neuroanatomical areas in mouse and human.", "pub": "" },
+      { "name": "PANCDB", "url": "https://hpap.pmacs.upenn.edu/", "desc": "Open-source data repository for the Human Pancreas Analysis Program, making genomic and islet function data accessible.", "pub": "10.2337/db19-0058" },
+      { "name": "Human Cell Atlas", "url": "https://www.humancellatlas.org/", "desc": "International consortium mapping all cell types in the healthy body across time from development to adulthood.", "pub": "10.1016/j.exphem.2018.09.004" },
+      { "name": "WebAtlas", "url": "https://developmental.cellatlas.io/webatlas", "desc": "Pipeline for user-friendly sharing and interactive navigation of integrated single-cell datasets.", "pub": "10.1038/s41592-024-02371-x" },
+      { "name": "Talk2Data", "url": "https://talk2data.bioturing.com/login", "desc": "Analytics hub for public single-cell and spatial data, built on a comprehensive database for in-depth large-scale research.", "pub": "" },
+      { "name": "HuBMAP", "url": "https://portal.hubmapconsortium.org/", "desc": "Open map of the human body at the cellular level, containing biomolecular data in genomics, proteomics and epigenetics.", "pub": "10.1038/s41586-019-1629-x" },
+      { "name": "NeMO Archive", "url": "https://nemoarchive.org/", "desc": "Neuroscience Multi-omic Archive focused on data from the BRAIN Initiative and SCORCH consortium.", "pub": "10.1093/nar/gkac962" },
+      { "name": "GutAtlas", "url": "https://www.gutcellatlas.org/", "desc": "Healthy reference atlas of the human GI tract with ~1.1M cells and 136 fine-grained cell states.", "pub": "10.1038/s41586-024-07571-1" },
+      { "name": "Arc Virtual Cell Atlas", "url": "https://arcinstitute.org/tools/virtualcellatlas", "desc": "Includes observational and perturbational data from over 300 million cells.", "pub": "10.1101/2025.02.20.639398" },
+      { "name": "Single Cell Omics", "url": "https://www.singlecell.de/index.php/resources/databases/", "desc": "Curated list of databases with access to published single-cell datasets for exploration and download.", "pub": "" }
+    ]
+  },
+  "epigenetics": {
+    "label": "Epigenetics",
+    "entries": [
+      { "name": "Epimap", "url": "https://compbio.mit.edu/epimap/", "desc": "Aggregated 3,030 references from ENCODE, Roadmap, and GGR; imputed 14,952 datasets across 859 biosamples.", "pub": "10.1038/s41586-020-03145-z" },
+      { "name": "3DIV", "url": "http://www.3div.kr/capture_hic", "desc": "Long-range chromatin interaction maps centered on 18,943 promoters in 27 human cell/tissue types.", "pub": "" },
+      { "name": "ABC Model", "url": "https://www.engreitzlab.org/resources/", "desc": "Activity-by-Contact model predicts which enhancers regulate which genes based on epigenomic datasets.", "pub": "10.1038/s41586-021-03446-x" },
+      { "name": "HuBMAP", "url": "https://portal.hubmapconsortium.org/", "desc": "Open map of the human body at the cellular level, containing biomolecular data in genomics, proteomics and epigenetics.", "pub": "10.1038/s41586-019-1629-x" },
+      { "name": "NeMO Archive", "url": "https://nemoarchive.org/", "desc": "Neuroscience Multi-omic Archive focused on data from the BRAIN Initiative and SCORCH consortium.", "pub": "10.1093/nar/gkac962" }
+    ]
+  },
+  "proteomics": {
+    "label": "Proteomics",
+    "entries": [
+      { "name": "PRIDE", "url": "https://www.ebi.ac.uk/pride/", "desc": "World's largest data repository of mass spectrometry-based proteomics data.", "pub": "10.1093/nar/gkab1038" },
+      { "name": "ProteomeXchange", "url": "https://proteomecentral.proteomexchange.org/", "desc": "Globally coordinated data submission and dissemination pipelines for major proteomics repositories.", "pub": "10.1093/nar/gkac1040" },
+      { "name": "PeptideAtlas", "url": "https://peptideatlas.org/", "desc": "Multi-organism compendium of peptides identified in large-scale tandem mass spectrometry experiments.", "pub": "10.1021/acs.jproteome.3c00536" },
+      { "name": "MassIVE", "url": "https://massive.ucsd.edu/ProteoSAFe/static/massive.jsp", "desc": "NIH-funded community resource for the global, free exchange of mass spectrometry data.", "pub": "" },
+      { "name": "jPOSTrepo", "url": "https://repository.jpostdb.org/", "desc": "Japan ProteOme STandard Repository for sharing MS raw and processed data.", "pub": "10.1093/nar/gkw1080" },
+      { "name": "Panorama Public", "url": "https://panoramaweb.org/Panorama%20Public/project-begin.view", "desc": "Server-based data repository for targeted mass spectrometry assays integrating into Skyline workflows.", "pub": "10.1021/pr5006636" },
+      { "name": "CHO Proteome Database", "url": "https://www.chogenome.org/proteome_new.php", "desc": "Hosts proteomic data generated from CHO cell lines.", "pub": "" },
+      { "name": "Human Liver Proteome Database", "url": "http://www.liverproteome.org/", "desc": "Quantitative protein data across hepatocytes, sinusoidal endothelial cells, hepatic stellate cells, and Kupffer cells.", "pub": "" },
+      { "name": "Human Plasma Proteome Project", "url": "https://peptideatlas.org/hupo/hppp/", "desc": "Combines results from labs worldwide working on the human plasma proteome.", "pub": "10.1021/acs.jproteome.1c00657" },
+      { "name": "Human Protein Atlas", "url": "https://www.proteinatlas.org/", "desc": "Maps all human proteins in cells, tissues, and organs using antibody imaging, mass spectrometry, and transcriptomics.", "pub": "10.1126/science.aay5947" },
+      { "name": "Human Skin Atlas", "url": "https://skin.science/", "desc": "Mass spectrometry-based proteome data from healthy and diseased skin for translational skin research.", "pub": "10.1038/s41467-020-19383-8" },
+      { "name": "Lipid MAPS Proteome Database", "url": "https://www.lipidmaps.org/data/proteome/LMPD.php", "desc": "Lipid-related genes and proteins for over 8,500 genes and 12,500 proteins across 10 species.", "pub": "10.1093/nar/gkj122" },
+      { "name": "MitoProteome", "url": "http://www.mitoproteome.org/", "desc": "Mitochondrial gene/protein sequence database and annotation system with 847+ human mitochondrial proteins.", "pub": "10.1093/nar/gkv1003" },
+      { "name": "Proteomic Data Commons", "url": "https://proteomic.datacommons.cancer.gov/pdc/", "desc": "NCI's largest public repository of proteogenomic comprehensive tumor datasets.", "pub": "" },
+      { "name": "PASSEL", "url": "https://peptideatlas.org/passel/", "desc": "Enables cross-analysis of SRM data, supports optimization of data collection, and facilitates data review.", "pub": "10.1002/pmic.201100515" },
+      { "name": "Protein Information Resource", "url": "https://research.bioinformatics.udel.edu/peptidematch/index.jsp", "desc": "Quickly retrieves all occurrences of a query peptide from UniProtKB with isoforms.", "pub": "10.1093/bioinformatics/btt484" },
+      { "name": "TopFIND", "url": "https://topfind.clip.msl.ubc.ca/", "desc": "Analysis platform focused on protein termini, their origin, modification and role in protein structure and function.", "pub": "10.1093/nar/gku1012" },
+      { "name": "HuBMAP", "url": "https://portal.hubmapconsortium.org/", "desc": "Open map of the human body at the cellular level, containing biomolecular data in genomics, proteomics and epigenetics.", "pub": "10.1038/s41586-019-1629-x" },
+      { "name": "UniProt", "url": "https://www.uniprot.org/", "desc": "Comprehensive resource for protein sequence and annotation data.", "pub": "10.1093/nar/gkac1052" }
+    ]
+  },
+  "metabolomics": {
+    "label": "Metabolomics",
+    "entries": [
+      { "name": "MassIVE", "url": "https://massive.ucsd.edu/ProteoSAFe/static/massive.jsp", "desc": "NIH-funded community resource for the global, free exchange of mass spectrometry data.", "pub": "" },
+      { "name": "MetaboLights", "url": "https://www.ebi.ac.uk/metabolights/", "desc": "Cross-species database for metabolomics experiments and derived information.", "pub": "10.1093/nar/gkad1045" },
+      { "name": "BMRB Metabolomics", "url": "https://bmrb.io/metabolomics/", "desc": "Archives spectral and quantitative NMR data derived from investigations of biological macromolecules and metabolites.", "pub": "10.1093/nar/gkac1050" },
+      { "name": "Birmingham Metabolite Library", "url": "http://www.bml-nmr.org/", "desc": "Collection of 3,328 experimental 1D and 2D J-resolved NMR spectra of 208 metabolite standards.", "pub": "10.1007/s11306-011-0347-7" },
+      { "name": "Human Metabolome Database", "url": "https://hmdb.ca/", "desc": "Freely available database containing detailed information about small molecule metabolites found in the human body.", "pub": "10.1093/nar/gkab1062" },
+      { "name": "MassBank", "url": "https://www.massbank.jp/", "desc": "One of the largest open databases of mass spectral data, covering numerous different instrument types.", "pub": "10.5281/zenodo.10213786" },
+      { "name": "MassBank of North America", "url": "https://mona.fiehnlab.ucdavis.edu/", "desc": "Metadata-centric, auto-curating repository for efficient storage and querying of mass spectral records.", "pub": "" },
+      { "name": "XCMS-Metlin", "url": "https://massconsortium.com/index-xcms-metlin.html", "desc": "Largest repository of MS/MS information that connects empirical data with molecular structure.", "pub": "" },
+      { "name": "MZCloud", "url": "https://www.mzcloud.org/", "desc": "Web-based mass spectral database of high and low resolution tandem mass spectra acquired under multiple experimental conditions.", "pub": "" },
+      { "name": "MetaCyc", "url": "https://metacyc.org/", "desc": "Curated database of experimentally elucidated metabolic pathways from all domains of life.", "pub": "10.1093/nar/gkz862" },
+      { "name": "HuMet", "url": "https://humet.org/p/app/humet/", "desc": "Enables exploration of dynamic metabolic responses to physiological challenges in healthy individuals.", "pub": "" },
+      { "name": "Metabolomics Workbench", "url": "https://www.metabolomicsworkbench.org/", "desc": "National repository for metabolomics data, with analysis tools, metabolite standards, protocols, and training.", "pub": "" }
+    ]
+  },
+  "microbiome": {
+    "label": "Microbiome",
+    "entries": [
+      { "name": "Enteropathway", "url": "https://enteropathway.org/", "desc": "Metabolic pathway database integrating 3,269 compounds, 3,677 reactions, and 876 modules related to the human gut microbiota.", "pub": "10.1093/bib/bbae419" }
+    ]
+  },
+  "bulk_rnaseq": {
+    "label": "Bulk RNAseq",
+    "entries": [
+      { "name": "exRNA Atlas", "url": "https://exrna.org/", "desc": "exRNA profiles derived from various biofluids and conditions, storing data from small RNA sequencing assays.", "pub": "10.1016/j.isci.2022.104653" },
+      { "name": "LINCS", "url": "https://lincsproject.org/", "desc": "Catalogs gene expression changes when cells are exposed to various perturbing agents.", "pub": "10.1016/j.cels.2017.11.001" },
+      { "name": "GTEx Portal", "url": "https://gtexportal.org/home/", "desc": "Comprehensive public resource for tissue and cell-specific gene expression and regulation across individuals and species.", "pub": "10.1038/nature24277" },
+      { "name": "HuBMAP", "url": "https://portal.hubmapconsortium.org/", "desc": "Open map of the human body at the cellular level, containing biomolecular data in genomics, proteomics and epigenetics.", "pub": "10.1038/s41586-019-1629-x" },
+      { "name": "NeMO Archive", "url": "https://nemoarchive.org/", "desc": "Neuroscience Multi-omic Archive focused on data from the BRAIN Initiative and SCORCH consortium.", "pub": "10.1093/nar/gkac962" },
+      { "name": "GDC", "url": "https://gdc.cancer.gov/", "desc": "NCI's unified data repository enabling data sharing across cancer genomic studies in support of precision medicine.", "pub": "10.1056/NEJMp1607591" }
+    ]
+  },
+  "drug": {
+    "label": "Drug",
+    "entries": [
+      { "name": "DrugMap", "url": "https://idrblab.org/drugmap/", "desc": "Maps drug-molecule information for 30,000+ drugs and candidates, tracking 5,000+ interacting molecules across body locations and disease sites.", "pub": "10.1093/nar/gkac813" }
+    ]
+  },
+  "integrative": {
+    "label": "Integrative",
+    "entries": [
+      { "name": "INTERVAL", "url": "https://www.intervalrna.org.uk/", "desc": "Open-access resource on shared genetic etiology across transcriptional phenotypes, molecular traits and health outcomes in humans.", "pub": "10.1038/s41588-025-02096-3" }
+    ]
+  },
+  "data_portals": {
+    "label": "Data portals",
+    "entries": [
+      { "name": "Adipose Tissue Knowledge Portal", "url": "https://adiposetissue.org/", "desc": "Open access to clinical, transcriptional and protein data in adipose tissue down to single-cell level.", "pub": "10.1016/j.cmet.2025.01.012" },
+      { "name": "Common Metabolic Disease Knowledge Portal", "url": "https://hugeamp.org/", "desc": "Aggregates and displays human genetic and functional genomic information linked to common metabolic diseases and traits.", "pub": "10.1161/CIRCGEN.123.004181" }
+    ]
+  }
+}
