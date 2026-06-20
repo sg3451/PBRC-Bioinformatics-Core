@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bioinformatics & Computational Biology Core – PBRC</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --pbrc-purple: #461D7C;
+    --pbrc-purple-dark: #2D1250;
+    --pbrc-purple-light: #5C2B9D;
+    --lsu-gold: #FDD023;
+    --lsu-gold-hover: #E5BC1F;
+    --pbrc-gray: #999999;
+    --bg-dark: #140724;
+    --white: #FFFFFF;
+    --off: #F7F6F9;
+    --text: #211C27;
+    --muted: #615C68;
+    --border: #E5E2E9;
+    --card-shadow: 0 2px 6px rgba(70,29,124,0.06);
+    --radius: 10px;
+  }
+  html { scroll-behavior: smooth; scroll-padding-top: 56px; }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; color: var(--text); background: var(--white); line-height: 1.65; font-size: 16px; }
+  
+  /* Navigation */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(20, 7, 36, 0.96); backdrop-filter: blur(8px); border-bottom: 2px solid var(--pbrc-purple); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; }
+  .nav-brand { font-size: 14px; font-weight: 600; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  .nav-brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lsu-gold); flex-shrink: 0; }
+  .nav-links { display: flex; }
+  .nav-links a { font-size: 13px; color: rgba(255,255,255,0.7); text-decoration: none; padding: 0 1rem; height: 56px; display: flex; align-items: center; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--lsu-gold); }
+  .nav-links a.active { color: var(--white); border-bottom: 3px solid var(--lsu-gold); font-weight: 500; }
+  
+  /* Hero Section */
+  #home { min-height: 100vh; background: var(--bg-dark); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; padding-top: 56px; }
+  .hero-inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 5rem 2rem 4rem; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; color: var(--lsu-gold); text-transform: uppercase; margin-bottom: 1.25rem; }
+  .hero-title { font-size: clamp(2rem,4vw,2.8rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 1.25rem; letter-spacing: -0.02em; }
+  .hero-title span { color: var(--lsu-gold); }
+  .hero-subtitle { font-size: 1.05rem; color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 2rem; max-width: 480px; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--lsu-gold); color: var(--pbrc-purple-dark); font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 24px; border-radius: 6px; transition: background 0.15s, transform 0.1s; }
+  .hero-cta:hover { background: var(--lsu-gold-hover); transform: translateY(-1px); }
+  .hero-cta.secondary { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.3); }
+  .hero-cta.secondary:hover { background: rgba(255,255,255,0.05); border-color: var(--white); }
+  .hero-cta svg { width: 16px; height: 16px; }
+  #helixCanvas { position: absolute; right: 0; top: 0; bottom: 0; width: 50%; opacity: 0.25; pointer-events: none; }
+  
+  .hero-stats { display: flex; gap: 2rem; margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+  .stat-num { font-size: 1.75rem; font-weight: 700; color: var(--lsu-gold); line-height: 1; }
+  .stat-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+  
+  /* Services Panel */
+  .hero-card { background: rgba(70, 29, 124, 0.2); border: 1px solid rgba(253, 208, 35, 0.2); border-radius: 14px; padding: 2rem; backdrop-filter: blur(4px); }
+  .hero-card h3 { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lsu-gold); margin-bottom: 1.25rem; border-bottom: 1px solid rgba(253, 208, 35, 0.1); padding-bottom: 0.5rem; }
+  .service-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+  .service-list li { font-size: 13.5px; color: rgba(255,255,255,0.85); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+  .service-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--lsu-gold); flex-shrink: 0; margin-top: 6px; }
+  
+  /* Global Content Layouts */
+  .section-wrap { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+  .section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; color: var(--pbrc-purple); text-transform: uppercase; margin-bottom: 0.75rem; }
+  .section-title { font-size: clamp(1.5rem,2.5vw,2rem); font-weight: 700; color: var(--text); line-height: 1.25; margin-bottom: 0.75rem; letter-spacing: -0.015em; }
+  .section-sub { font-size: 1rem; color: var(--muted); max-width: 650px; line-height: 1.7; }
+  
+  /* About & Partnership Workflow */
+  #about { background: var(--white); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+  .about-body { font-size: 15px; color: var(--muted); line-height: 1.8; }
+  .about-body p + p { margin-top: 1.25rem; }
+  
+  .highlight-box { background: var(--off); border-left: 4px solid var(--pbrc-purple); border-radius: 0 12px 12px 0; padding: 2rem; color: var(--text); }
+  .highlight-box h4 { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pbrc-purple); margin-bottom: 1.25rem; }
+  .workflow-list { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+  .workflow-step { display: flex; gap: 1rem; }
+  .step-num { font-size: 11px; font-weight: 700; background: var(--pbrc-purple); color: var(--white); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .step-content strong { color: var(--pbrc-purple-dark); font-size: 14px; display: block; margin-bottom: 2px; }
+  .step-content p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  
+  /* Databases Section */
+  #databases { background: var(--off); }
+  .db-header-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 3rem; margin-bottom: 1.5rem; }
+  .db-search-wrap { position: relative; }
+  .db-search-wrap input { font-size: 13px; padding: 9px 14px 9px 36px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); width: 260px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+  .db-search-wrap input:focus { border-color: var(--pbrc-purple); box-shadow: 0 0 0 3px rgba(70,29,124,0.08); }
+  .db-search-wrap svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--muted); pointer-events: none; }
+  
+  /* Tabs UI */
+  .tabs-scroll { overflow-x: auto; padding-bottom: 2px; }
+  .tabs { display: flex; gap: 6px; background: #EFECEF; border: 1px solid var(--border); border-radius: 10px; padding: 4px; width: max-content; min-width: 100%; }
+  .tab-btn { font-size: 12.5px; font-weight: 500; color: var(--muted); padding: 7px 14px; border-radius: 7px; border: none; background: transparent; cursor: pointer; white-space: nowrap; transition: background 0.12s, color 0.12s; display: flex; align-items: center; gap: 6px; }
+  .tab-btn .tab-count { font-size: 11px; background: rgba(0,0,0,0.06); color: var(--muted); padding: 1px 6px; border-radius: 10px; font-weight: 600; }
+  .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.5); color: var(--text); }
+  .tab-btn.active { background: var(--pbrc-purple); color: var(--white); font-weight: 600; }
+  .tab-btn.active .tab-count { background: var(--lsu-gold); color: var(--pbrc-purple-dark); }
+  
+  /* Card Layouts & Dynamic Assets */
+  .db-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; margin-top: 1.25rem; }
+  .db-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; text-decoration: none; display: block; transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s; box-shadow: var(--card-shadow); }
+  .db-card:hover { border-color: var(--pbrc-purple); box-shadow: 0 4px 16px rgba(70,29,124,0.08); transform: translateY(-2px); }
+  .db-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 0.6rem; }
+  .db-name { font-size: 13.5px; font-weight: 600; color: var(--text); line-height: 1.35; }
+  .db-ext-icon { color: var(--muted); flex-shrink: 0; margin-top: 2px; transition: color 0.15s; }
+  .db-card:hover .db-ext-icon { color: var(--pbrc-purple); }
+  .db-desc { font-size: 12.5px; color: var(--muted); line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .db-pub { margin-top: 0.75rem; font-size: 11px; color: #8A8493; display: flex; align-items: center; gap: 5px; }
+  .db-pub svg { width: 11px; height: 11px; flex-shrink: 0; }
+  .db-meta { font-size: 12px; color: var(--muted); margin-top: 0.5rem; font-weight: 500; }
+  .no-results { grid-column: 1/-1; text-align: center; padding: 3rem; font-size: 14px; color: var(--muted); }
+  
+  /* Skeleton Loading System */
+  .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; width: 100%; }
+  .skeleton-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; height: 130px; display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
+  .skeleton-line { background: #EFECEF; height: 12px; border-radius: 4px; animation: pulse 1.5s infinite ease-in-out; }
+  .skeleton-line.title { width: 50%; height: 16px; }
+  .skeleton-line.desc-1 { width: 90%; }
+  .skeleton-line.desc-2 { width: 75%; }
+  @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+  
+  /* Contact Architecture */
+  .contact-card { margin-top: 2.5rem; background: var(--bg-dark); border: 1px solid rgba(70,29,124,0.3); border-radius: 14px; padding: 2.5rem 3rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; position: relative; }
+  .contact-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lsu-gold); margin-bottom: 0.5rem; }
+  .contact-name { font-size: 1.25rem; font-weight: 700; color: var(--white); margin-bottom: 0.35rem; }
+  .contact-desc { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 480px; }
+  .contact-ctas { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
+  .contact-intake-btn { display: inline-flex; align-items: center; gap: 9px; background: var(--lsu-gold); color: var(--pbrc-purple-dark); font-size: 14px; font-weight: 600; text-decoration: none; padding: 13px 24px; border-radius: 8px; white-space: nowrap; transition: background 0.15s, transform 0.1s; box-shadow: 0 4px 12px rgba(253,208,35,0.15); }
+  .contact-intake-btn:hover { background: var(--lsu-gold-hover); transform: translateY(-1px); }
+  .contact-email-link { font-size: 13.5px; color: rgba(255,255,255,0.8); text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,0.4); padding-bottom: 2px; cursor: pointer; transition: color 0.15s, border-color 0.15s; user-select: none; }
+  .contact-email-link:hover { color: var(--lsu-gold); border-color: var(--lsu-gold); }
+  .contact-intake-btn svg { width: 16px; height: 16px; }
+  
+  /* Footer */
+  footer { background: var(--bg-dark); padding: 3rem 2rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-brand { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 0.5rem; }
+  .footer-sub { font-size: 12.5px; color: rgba(255,255,255,0.4); letter-spacing: 0.02em; }
+  .footer-gold { color: var(--lsu-gold); font-weight: 500; }
+  
+  @media (max-width: 768px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-card { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    #helixCanvas { width: 100%; opacity: 0.1; }
+    .contact-card { padding: 2rem; flex-direction: column; align-items: flex-start; }
+    .contact-ctas { width: 100%; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+    .contact-intake-btn { width: 100%; justify-content: center; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#home"><span class="dot"></span>PBRC Bioinformatics Core</a>
+  <div class="nav-links">
+    <a href="#home" class="active">Home</a>
+    <a href="#about">About</a>
+    <a href="#databases">Databases</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section id="home">
+  <canvas id="helixCanvas"></canvas>
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow">Pennington Biomedical Research Center</p>
+      <h1 class="hero-title">Bioinformatics &amp;<br><span>Computational</span><br>Biology Core</h1>
+      <p class="hero-subtitle">Advancing big data research for big questions in nutrition and metabolism.</p>
+      <div class="hero-actions">
+        <a class="hero-cta" href="#databases">
+          Browse databases
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a class="hero-cta secondary" href="#contact">Request Consultation</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num" id="statDbs">—</div><div class="stat-label">Curated databases</div></div>
+        <div class="stat-item"><div class="stat-num" id="statCats">—</div><div class="stat-label">Omics categories</div></div>
+        <div class="stat-item"><div class="stat-num">2026</div><div class="stat-label">Last updated</div></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>Core Services</h3>
+      <ul class="service-list">
+        <li>Analysis &amp; interpretation of NGS data (RNA-Seq, ChIP-Seq, ATAC-Seq, Methylation)</li>
+        <li>Multi-omics consolidation across genomics, proteomics, and metabolomics data</li>
+        <li>Single-cell isolation analytics (scRNA-Seq, scATAC-Seq)</li>
+        <li>Predictive modeling utilizing tailored machine learning and AI strategies</li>
+        <li>High-throughput processing built on scalable HPC pipelines</li>
+        <li>Biostatistical consultation for grant and manuscript lifecycle development</li>
+        <li>Institutional training frameworks and dedicated research collaborations</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-wrap">
+    <p class="section-eyebrow">Who we are</p>
+    <h2 class="section-title">Powering discovery through computational science</h2>
+    <p class="section-sub">We partner with researchers across PBRC to design, execute, and interpret complex multi-omics studies — from experimental design to final publication.</p>
+    <div class="about-grid">
+      <div class="about-body">
+        <p>The Bioinformatics and Computational Biology Core supports investigators at the Pennington Biomedical Research Center by providing expert data science, statistical analysis, and bioinformatics services tailored to nutrition and metabolic disease research.</p>
+        <p>Our team works across the full data lifecycle: study design, sequencing data processing, multi-omics integration, machine learning modeling, and visualization — with a commitment to reproducible, publication-ready science.</p>
+        <p>We maintain a curated directory of the most relevant public databases in single-cell sequencing, epigenomics, proteomics, metabolomics, and more — accessible via this site — to support researchers in finding the right data resources for their projects.</p>
+      </div>
+      <div class="highlight-box">
+        <h4>Our Partnership Pipeline</h4>
+        <ul class="workflow-list">
+          <li class="workflow-step">
+            <span class="step-num">1</span>
+            <div class="step-content">
+              <strong>Single Intake Submission</strong>
+              <p>Launch your project by completing the consultation form below. This single form captures all your project profiles and schedules your intake review.</p>
+            </div>
+          </li>
+          <li class="workflow-step">
+            <span class="step-num">2</span>
+            <div class="step-content">
+              <strong>Initial Review Session</strong>
+              <p>We host a targeted strategy session to align on processing parameters, cloud/HPC cluster resource requirements, and experimental timeline baselines.</p>
+            </div>
+          </li>
+          <li class="workflow-step">
+            <span class="step-num">3</span>
+            <div class="step-content">
+              <strong>Algorithmic Execution</strong>
+              <p>Data runs through our automated tracking environments, structural pipelines, and modern predictive mathematical frameworks.</p>
+            </div>
+          </li>
+          <li class="workflow-step">
+            <span class="step-num">4</span>
+            <div class="step-content">
+              <strong>Deliverables &amp; Co-Author Sync</strong>
+              <p>Receive your multi-omics figures, processing matrices, and complete computational methodology texts written cleanly for your publication.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="databases">
+  <div class="section-wrap">
+    <p class="section-eyebrow">Resource directory</p>
+    <h2 class="section-title">Bioinformatics databases</h2>
+    <p class="section-sub">Curated public databases organized by omics category. Click any card to visit the resource directly.</p>
+    <div class="db-header-row">
+      <div class="tabs-scroll"><div class="tabs" id="tabsBar"></div></div>
+      <div class="db-search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search databases…" autocomplete="off">
+      </div>
+    </div>
+    <div class="db-meta" id="dbMeta"></div>
+    
+    <div id="dbGrid">
+      <div class="skeleton-grid">
+        <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-line desc-1"></div><div class="skeleton-line desc-2"></div></div>
+        <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-line desc-1"></div><div class="skeleton-line desc-2"></div></div>
+        <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-line desc-1"></div><div class="skeleton-line desc-2"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-wrap">
+    <p class="section-eyebrow">Get in touch</p>
+    <h2 class="section-title">Contact us</h2>
+    <p class="section-sub">Interested in collaborating or have questions about our services? We'd love to hear from you.</p>
+    <div class="contact-card">
+      <div class="contact-text">
+        <div class="contact-label">Principal Investigator</div>
+        <div class="contact-name">Prof. Sujoy Ghosh</div>
+        <div class="contact-desc">Ready to launch a project? Submit our central consultation form to instantly drop your dataset into our active tracking queue.</div>
+      </div>
+      <div class="contact-ctas">
+        <a class="contact-intake-btn" href="https://forms.office.com/r/YOUR_MICROSOFT_FORM_ID" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Request a Consultation
+        </a>
+        <span class="contact-email-link" id="core-email">Click to show email</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Bioinformatics &amp; Computational Biology Core</div>
+    <div class="footer-sub">Pennington Biomedical Research Center &nbsp;·&nbsp; <span class="footer-gold">PBRC</span> &nbsp;·&nbsp; Baton Rouge, Louisiana</div>
+  </div>
+</footer>
+
+<script>
+let DB_DATA = {}, currentTab = '', searchVal = '';
+
+fetch('databases.json')
+  .then(r => r.json())
+  .then(data => { DB_DATA = data; init(); })
+  .catch(() => {
+    document.getElementById('dbGrid').innerHTML = '<div class="no-results">Could not load databases.json — make sure it is uploaded to the same folder as index.html.</div>';
+  });
+
+function init() {
+  const keys = Object.keys(DB_DATA);
+  currentTab = keys[0];
+  const total = keys.reduce((s, k) => s + DB_DATA[k].entries.length, 0);
+  document.getElementById('statDbs').textContent = total + '+';
+  document.getElementById('statCats').textContent = keys.length;
+  const tabsBar = document.getElementById('tabsBar');
+  keys.forEach((key, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+    btn.dataset.tab = key;
+    btn.innerHTML = DB_DATA[key].label + ' <span class="tab-count">' + DB_DATA[key].entries.length + '</span>';
+    tabsBar.appendChild(btn);
+  });
+  tabsBar.addEventListener('click', e => {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTab = btn.dataset.tab;
+    renderGrid();
+  });
+  document.getElementById('searchInput').addEventListener('input', e => { searchVal = e.target.value; renderGrid(); });
+  renderGrid();
+}
+
+function renderGrid() {
+  const grid = document.getElementById('dbGrid');
+  const meta = document.getElementById('dbMeta');
+  if (!DB_DATA[currentTab]) return;
+  
+  let entries = DB_DATA[currentTab].entries;
+  if (searchVal) {
+    const q = searchVal.toLowerCase();
+    entries = entries.filter(e => e.name.toLowerCase().includes(q) || e.desc.toLowerCase().includes(q));
+  }
+  meta.textContent = entries.length + ' database' + (entries.length !== 1 ? 's' : '') + ' in ' + DB_DATA[currentTab].label;
+  if (!entries.length) { grid.innerHTML = '<div class="no-results">No databases match "<strong>' + searchVal + '</strong>"</div>'; return; }
+  grid.innerHTML = '<div class="db-grid">' + entries.map(e => `
+    <a class="db-card" href="${e.url}" target="_blank" rel="noopener noreferrer">
+      <div class="db-card-top">
+        <span class="db-name">${e.name}</span>
+        <svg class="db-ext-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </div>
+      <div class="db-desc">${e.desc}</div>
+      ${e.pub ? `<div class="db-pub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>DOI: ${e.pub}</div>` : ''}
+    </a>`).join('') + '</div>';
+}
+
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = ['home','about','databases','contact'];
+window.addEventListener('scroll', () => {
+  let current = 'home';
+  sections.forEach(id => { const el = document.getElementById(id); if (el && window.scrollY >= el.offsetTop - 80) current = id; });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+}, { passive: true });
+
+/* Branded Background Canvas Execution (Purple & Gold Wavetracks) */
+(function() {
+  const canvas = document.getElementById('helixCanvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = canvas.offsetWidth*devicePixelRatio; canvas.height = canvas.offsetHeight*devicePixelRatio; ctx.scale(devicePixelRatio, devicePixelRatio); }
+  window.addEventListener('resize', resize); resize();
+  let t = 0;
+  (function draw() {
+    const W = canvas.offsetWidth, H = canvas.offsetHeight;
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2, amp=W*0.28, freq=0.012;
+    for (let i=0; i<200; i++) {
+      const y=(i/200)*H, phase=y*freq+t;
+      const x1=cx+Math.sin(phase)*amp, x2=cx+Math.sin(phase+Math.PI)*amp;
+      const alpha=0.15+0.5*Math.abs(Math.sin(phase));
+      if (i>0) {
+        const py=((i-1)/200)*H, px1=cx+Math.sin(py*freq+t)*amp, px2=cx+Math.sin(py*freq+t+Math.PI)*amp;
+        ctx.beginPath(); ctx.moveTo(px1,py); ctx.lineTo(x1,y); ctx.strokeStyle=`rgba(92,43,157,${alpha*0.6})`; ctx.lineWidth=1.5; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(px2,py); ctx.lineTo(x2,y); ctx.strokeStyle=`rgba(253,208,35,${alpha*0.4})`; ctx.lineWidth=1.5; ctx.stroke();
+      }
+      if (i%10===0) {
+        ctx.beginPath(); ctx.moveTo(x1,y); ctx.lineTo(x2,y); ctx.strokeStyle=`rgba(255,255,255,${alpha*0.15})`; ctx.lineWidth=1; ctx.stroke();
+        [x1,x2].forEach((x, idx) => { ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fillStyle=idx===0?`rgba(92,43,157,${alpha*0.8})`:`rgba(253,208,35,${alpha*0.8})`; ctx.fill(); });
+      }
+    }
+    t+=0.008; requestAnimationFrame(draw);
+  })();
+})();
+
+/* JavaScript Anti-Scraping Email Obfuscation Logic */
+document.getElementById('core-email').addEventListener('click', function() {
+  const u = "sujoy.ghosh";
+  const d = "pbrc.edu";
+  const targetEmail = u + "@" + d;
+  
+  // Directly opens default mail client
+  window.location.href = "mailto:" + targetEmail;
+  
+  // Flips element text smoothly to show the reconstructed string
+  this.textContent = targetEmail;
+});
+</script>
+</body>
+</html>
