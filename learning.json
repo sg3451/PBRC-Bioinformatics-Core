@@ -1,0 +1,30 @@
+{
+  "Introductory Basics": {
+    "label": "Introductory Basics",
+    "entries": [
+      {
+        "name": "Introduction to RNA-Seq Analysis",
+        "type": "Video",
+        "desc": "A 45-minute baseline webinar covering library preparation, quality control alignment, and differential expression basics.",
+        "url": "https://youtube.com/example-video-link"
+      },
+      {
+        "name": "PBRC High-Performance Computing Quickstart Guide",
+        "type": "PDF",
+        "desc": "Our Core's internal handout detailing cluster partitions, Slurm script queues, and directory allocation allocations.",
+        "url": "docs/HPC_Quickstart_v2.pdf"
+      }
+    ]
+  },
+  "Advanced Omics & R": {
+    "label": "Advanced Omics & R",
+    "entries": [
+      {
+        "name": "Bioconductor for Epidemiologists",
+        "type": "Course",
+        "desc": "A self-paced external web course focused on leveraging AnnotationDbi and transcriptomics data wrangling.",
+        "url": "https://course-link.org"
+      }
+    ]
+  }
+}
