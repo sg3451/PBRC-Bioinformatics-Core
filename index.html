@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bioinformatics & Computational Biology Core – PBRC</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --pbrc-purple: #461D7C;
+    --pbrc-purple-dark: #2D1250;
+    --pbrc-purple-light: #5C2B9D;
+    --lsu-gold: #FDD023;
+    --lsu-gold-hover: #E5BC1F;
+    --pbrc-gray: #999999;
+    --bg-dark: #140724;
+    --white: #FFFFFF;
+    --off: #F7F6F9;
+    --text: #211C27;
+    --muted: #615C68;
+    --border: #E5E2E9;
+    --card-shadow: 0 4px 12px rgba(70,29,124,0.05);
+    --radius: 12px;
+  }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; color: var(--text); background: var(--off); line-height: 1.65; font-size: 16px; }
+  
+  /* Top Navigation Header */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(20, 7, 36, 0.96); backdrop-filter: blur(8px); border-bottom: 2px solid var(--pbrc-purple); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; }
+  .nav-brand { font-size: 14px; font-weight: 600; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  .nav-brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lsu-gold); flex-shrink: 0; }
+  .nav-links { display: flex; }
+  .nav-links a { font-size: 13px; color: rgba(255,255,255,0.7); text-decoration: none; padding: 0 1rem; height: 56px; display: flex; align-items: center; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--lsu-gold); }
+  .nav-links a.active { color: var(--white); border-bottom: 3px solid var(--lsu-gold); font-weight: 500; }
+  
+  /* Main Structural Portal Layout */
+  .portal-wrap { max-width: 1300px; margin: 56px auto 0; padding: 3rem 2rem; display: grid; grid-template-columns: 1fr 1.6fr; gap: 3.5rem; align-items: start; }
+  
+  /* Left Column: Fixed Institutional Anchor */
+  .left-anchor { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 2rem; }
+  .anchor-card { background: var(--bg-dark); border-radius: var(--radius); padding: 2.5rem; color: var(--white); position: relative; overflow: hidden; border: 1px solid rgba(70,29,124,0.2); }
+  #helixCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; z-index: 1; }
+  .anchor-content { position: relative; z-index: 2; }
+  
+  .anchor-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; color: var(--lsu-gold); text-transform: uppercase; margin-bottom: 1rem; }
+  .anchor-title { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 700; line-height: 1.2; margin-bottom: 1.25rem; letter-spacing: -0.02em; }
+  .anchor-title span { color: var(--lsu-gold); }
+  .anchor-subtitle { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.7; margin-bottom: 2rem; }
+  
+  /* Left Column Institutional Counter Stats */
+  .anchor-stats { display: flex; flex-direction: column; gap: 1.25rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; }
+  .stat-item { display: flex; align-items: center; justify-content: space-between; }
+  .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--lsu-gold); }
+  .stat-label { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em; }
+  
+  /* Brief Narrative Block under Stats */
+  .anchor-mission { font-size: 14px; color: var(--muted); padding: 0 0.5rem; line-height: 1.6; }
+  .anchor-mission p { margin-bottom: 1rem; }
+  
+  /* Right Column: Dynamic Operations Stack */
+  .right-stack { display: flex; flex-direction: column; gap: 2.5rem; }
+  
+  /* Shared Pillar Block Styling */
+  .pillar-block { background: var(--white); border-radius: var(--radius); padding: 2.5rem; box-shadow: var(--card-shadow); border: 1px solid var(--border); transition: transform 0.2s, border-color 0.2s; }
+  .pillar-block:hover { border-color: rgba(70,29,124,0.15); }
+  
+  .pillar-header { margin-bottom: 1.75rem; }
+  .pillar-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: var(--pbrc-purple); text-transform: uppercase; margin-bottom: 0.5rem; }
+  .pillar-title { font-size: 1.5rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+  .pillar-desc { font-size: 14.5px; color: var(--muted); margin-top: 0.5rem; }
+  
+  /* Integrated Directory Component Filters (Databases / Courses) */
+  .db-header-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  
+  /* Premium Embedded Hero Search Input */
+  .search-input-wrapper { position: relative; }
+  .search-input-wrapper input { font-size: 13.5px; padding: 11px 16px 11px 40px; border: 2px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); width: 280px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+  .search-input-wrapper input:focus { border-color: var(--pbrc-purple); box-shadow: 0 0 0 3px rgba(70,29,124,0.06); }
+  .search-input-wrapper svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); pointer-events: none; }
+  
+  /* Category Tabs Scroller styling */
+  .tabs-scroll { overflow-x: auto; padding-bottom: 2px; max-width: 100%; }
+  .tabs { display: flex; gap: 6px; background: #EFECEF; border: 1px solid var(--border); border-radius: 8px; padding: 4px; width: max-content; }
+  .tab-btn { font-size: 12px; font-weight: 600; color: var(--muted); padding: 6px 12px; border-radius: 5px; border: none; background: transparent; cursor: pointer; white-space: nowrap; transition: all 0.12s; display: flex; align-items: center; gap: 6px; }
+  .tab-btn .tab-count { font-size: 10px; background: rgba(0,0,0,0.06); color: var(--muted); padding: 1px 6px; border-radius: 10px; font-weight: 700; }
+  .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.6); color: var(--text); }
+  .tab-btn.active { background: var(--pbrc-purple); color: var(--white); }
+  .tab-btn.active .tab-count { background: var(--lsu-gold); color: var(--pbrc-purple-dark); }
+  
+  /* Grid Asset Architectures */
+  .db-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; margin-top: 1rem; }
+  .db-card { background: var(--off); border: 1px solid var(--border); border-radius: 8px; padding: 1.15rem; text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s; }
+  .db-card:hover { border-color: var(--pbrc-purple); box-shadow: 0 4px 12px rgba(70,29,124,0.06); transform: translateY(-1px); }
+  .db-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 0.5rem; }
+  .db-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.35; }
+  .db-ext-icon { color: var(--muted); flex-shrink: 0; transition: color 0.15s; }
+  .db-card:hover .db-ext-icon { color: var(--pbrc-purple); }
+  .db-desc { font-size: 12px; color: var(--muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: auto; }
+  .db-pub { margin-top: 0.75rem; font-size: 10.5px; color: #8A8493; display: flex; align-items: center; gap: 4px; border-top: 1px dashed var(--border); padding-top: 0.5rem; }
+  .db-pub svg { width: 10px; height: 10px; flex-shrink: 0; }
+  .db-meta { font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 1rem; }
+  .no-results { grid-column: 1/-1; text-align: center; padding: 2rem; font-size: 13.5px; color: var(--muted); }
+  
+  /* Crowdsourced Form Hook Triggers */
+  .suggest-trigger { font-size: 12.5px; color: var(--muted); margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border); }
+  .suggest-trigger a { color: var(--pbrc-purple); font-weight: 600; text-decoration: none; }
+  .suggest-trigger a:hover { text-decoration: underline; }
+  
+  /* Interactive Learning Media Badges */
+  .media-badge { display: inline-flex; align-items: center; font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 1px 6px; border-radius: 4px; letter-spacing: 0.04em; margin-bottom: 0.5rem; width: max-content; }
+  .media-badge.video { background: rgba(70,29,124,0.1); color: var(--pbrc-purple); }
+  .media-badge.pdf { background: rgba(97,92,104,0.1); color: var(--muted); }
+  .media-badge.course { background: rgba(229,188,31,0.15); color: var(--pbrc-purple-dark); border: 1px solid rgba(229,188,31,0.2); }
+  
+  /* Pillar 3: Project Consultation Intake (Deep Purple Banner Card) */
+  .intake-pillar { background: var(--bg-dark); border-color: rgba(70,29,124,0.4); color: var(--white); border-top: 4px solid var(--lsu-gold); }
+  .intake-pillar .pillar-title { color: var(--white); }
+  .intake-pillar .pillar-desc { color: rgba(255,255,255,0.7); }
+  
+  /* Streamlined Step Checklist Matrix */
+  .workflow-timeline { display: flex; flex-direction: column; gap: 1.25rem; margin: 2rem 0; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
+  .timeline-node { display: flex; gap: 1rem; }
+  .node-num { font-size: 11px; font-weight: 700; background: var(--lsu-gold); color: var(--pbrc-purple-dark); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .node-content strong { color: var(--white); font-size: 13.5px; display: block; margin-bottom: 1px; }
+  .node-content p { font-size: 12.5px; color: rgba(255,255,255,0.55); line-height: 1.4; }
+  
+  .intake-actions { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; }
+  .intake-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--lsu-gold); color: var(--pbrc-purple-dark); font-size: 13.5px; font-weight: 600; text-decoration: none; padding: 12px 22px; border-radius: 6px; white-space: nowrap; transition: background 0.15s, transform 0.1s; box-shadow: 0 4px 12px rgba(253,208,35,0.1); }
+  .intake-btn:hover { background: var(--lsu-gold-hover); transform: translateY(-1px); }
+  .intake-btn svg { width: 14px; height: 14px; }
+  .obfuscated-email { font-size: 13px; color: rgba(255,255,255,0.75); text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,0.3); padding-bottom: 2px; cursor: pointer; transition: color 0.15s; user-select: none; }
+  .obfuscated-email:hover { color: var(--lsu-gold); border-color: var(--lsu-gold); }
+  
+  /* Skeleton Loading Subsystems */
+  .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px,1fr)); gap: 14px; width: 100%; }
+  .skeleton-card { background: var(--off); border: 1px solid var(--border); border-radius: 8px; padding: 1.15rem; height: 120px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
+  .skeleton-line { background: #EFECEF; height: 10px; border-radius: 4px; animation: pulse 1.5s infinite ease-in-out; }
+  .skeleton-line.title { width: 50%; height: 14px; }
+  .skeleton-line.desc-1 { width: 90%; }
+  .skeleton-line.desc-2 { width: 70%; }
+  @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+  
+  /* Footer Elements */
+  footer { background: var(--bg-dark); padding: 2.5rem 2rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 4rem; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-brand { font-size: 13.5px; font-weight: 600; color: var(--white); margin-bottom: 0.4rem; }
+  .footer-sub { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .footer-gold { color: var(--lsu-gold); font-weight: 500; }
+  
+  /* Desktop Layout Responsive Overrides */
+  @media (max-width: 992px) {
+    .portal-wrap { grid-template-columns: 1fr; gap: 2.5rem; padding: 2rem 1rem; }
+    .left-anchor { position: relative; top: 0; }
+    .anchor-card { padding: 2rem; }
+    .pillar-block { padding: 2rem 1.5rem; }
+    .db-header-row { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .search-input-wrapper input { width: 100%; }
+    .intake-actions { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+    .intake-btn { width: 100%; justify-content: center; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#home"><span class="dot"></span>PBRC Bioinformatics Core</a>
+  <div class="nav-links">
+    <a href="#databases">Databases</a>
+    <a href="#learning">Learning Hub</a>
+    <a href="#contact">Consultation</a>
+  </div>
+</nav>
+
+<div class="portal-wrap">
+  
+  <aside class="left-anchor">
+    <div class="anchor-card">
+      <canvas id="helixCanvas"></canvas>
+      <div class="anchor-content">
+        <p class="anchor-eyebrow">Institutional Facility</p>
+        <h1 class="anchor-title">Bioinformatics &amp;<br><span>Computational</span><br>Biology Core</h1>
+        <p class="anchor-subtitle">Providing expert data science, machine learning models, and high-performance pipeline support built for big questions in metabolic research.</p>
+        
+        <div class="anchor-stats">
+          <div class="stat-item"><span class="stat-label">Curated Repositories</span><span class="stat-num" id="statDbs">—</span></div>
+          <div class="stat-item"><span class="stat-label">Omics Categories</span><span class="stat-num" id="statCats">—</span></div>
+          <div class="stat-item"><span class="stat-label">System Update</span><span class="stat-num">2026</span></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="anchor-mission">
+      <p><strong>Powering discovery across the full multi-omics life cycle.</strong> We partner directly with investigators at the Pennington Biomedical Research Center and external global consortia from early-stage experimental setup down to finalized, publication-ready science.</p>
+      <p>Select an operation track on the right to screen our database index, inspect computational training arrays, or launch a direct project partnership layout review.</p>
+    </div>
+  </aside>
+  
+  <main class="right-stack">
+    
+    <section class="pillar-block" id="databases">
+      <div class="pillar-header">
+        <p class="pillar-eyebrow">Pillar Environment 01</p>
+        <h2 class="pillar-title">Omics Databases Registry</h2>
+        <p class="pillar-desc">Screen and segment highly-curated public repositories across single-cell, clinical obesity variants, and custom metabolic tracking datasets.</p>
+      </div>
+      
+      <div class="db-header-row">
+        <div class="tabs-scroll"><div class="tabs" id="tabsBar"></div></div>
+        <div class="search-input-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Search curated database indexes..." autocomplete="off">
+        </div>
+      </div>
+      <div class="db-meta" id="dbMeta"></div>
+      
+      <div id="dbGrid">
+        <div class="skeleton-grid">
+          <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-line desc-1"></div><div class="skeleton-line desc-2"></div></div>
+          <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-line desc-1"></div><div class="skeleton-line desc-2"></div></div>
+        </div>
+      </div>
+      
+      <div class="suggest-trigger">
+        Missing a preferred metabolic index? <a href="https://forms.office.com/r/YOUR_MICROSOFT_FORM_ID" target="_blank" rel="noopener noreferrer">Suggest a repository update &rarr;</a>
+      </div>
+    </section>
+    
+    <section class="pillar-block" id="learning">
+      <div class="pillar-header">
+        <p class="pillar-eyebrow">Pillar Environment 02</p>
+        <h2 class="pillar-title">Training &amp; Educational Hub</h2>
+        <p class="pillar-desc">Access localized processing materials, high-performance computing startup scripts, handouts, and self-paced bioinformatics modules.</p>
+      </div>
+      
+      <div class="db-header-row">
+        <div class="tabs-scroll"><div class="tabs" id="learningTabsBar"></div></div>
+        <div class="search-input-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="learningSearchInput" placeholder="Search available materials..." autocomplete="off">
+        </div>
+      </div>
+      <div class="db-meta" id="learningMeta"></div>
+      
+      <div id="learningGrid"></div>
+      
+      <div class="suggest-trigger">
+        Have an internal pipeline layout or training webinar to add? <a href="https://forms.office.com/r/YOUR_MICROSOFT_FORM_ID" target="_blank" rel="noopener noreferrer">Submit educational files &rarr;</a>
+      </div>
+    </section>
+    
+    <section class="pillar-block intake-pillar" id="contact">
+      <div class="pillar-header">
+        <p class="pillar-eyebrow" style="color: var(--lsu-gold);">Pillar Environment 03</p>
+        <h2 class="pillar-title">Project Consultation Intake</h2>
+        <p class="pillar-desc">Launch a formal data partnership with our core mechanics. A single integrated form handles allocation reviews, cluster pipelines, and co-author methodology support.</p>
+      </div>
+      
+      <div class="workflow-timeline">
+        <div class="timeline-node">
+          <span class="node-num">1</span>
+          <div class="node-content">
+            <strong>Single Intake Submission</strong>
+            <p>File your dataset metadata tracking parameters, targeted grant cycles, and pipeline expectations in our secure core form.</p>
+          </div>
+        </div>
+        <div class="timeline-node">
+          <span class="node-num">2</span>
+          <div class="node-content">
+            <strong>Resource &amp; Architecture Map</strong>
+            <p>Our analytics team syncs with you to verify structural cluster nodes, pipeline parameters, and algorithmic timeline goals.</p>
+          </div>
+        </div>
+        <div class="timeline-node">
+          <span class="node-num">3</span>
+          <div class="node-content">
+            <strong>Pipeline Execution &amp; Sync</strong>
+            <p>Data maps natively into scalable HPC system blocks under strict analytical QC constraints and reproducibility monitoring.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="intake-actions">
+        <a class="intake-btn" href="https://forms.office.com/r/YOUR_MICROSOFT_FORM_ID" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Request Core Consultation
+        </a>
+        <div>
+          <span style="font-size: 12px; color: rgba(255,255,255,0.4); display: block; margin-bottom: 2px;">Principal Investigator</span>
+          <div style="font-size: 14px; font-weight: 600; color: white; margin-bottom: 4px;">Prof. Sujoy Ghosh</div>
+          <span class="obfuscated-email" id="core-email">Show direct contact email</span>
+        </div>
+      </div>
+    </section>
+    
+  </main>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Bioinformatics &amp; Computational Biology Core</div>
+    <div class="footer-sub">Pennington Biomedical Research Center &nbsp;·&nbsp; <span class="footer-gold">PBRC</span> &nbsp;·&nbsp; Baton Rouge, Louisiana</div>
+  </div>
+</footer>
+
+<script>
+// Data System Hooks
+let DB_DATA = {}, currentTab = '', searchVal = '';
+let LEARNING_DATA = {}, currentLearningTab = '', learningSearchVal = '';
+
+// Default training database data mapping array if learning.json hasn't completely uploaded yet
+const RUNTIME_LEARNING_DEFAULT = {
+  "Basics": {
+    "label": "Introductory Basics",
+    "entries": [
+      { "name": "Introduction to RNA-Seq Analysis Pipeline", "type": "Video", "desc": "A 45-minute baseline webinar covering library preparation frameworks, structural quality control checks, and differential expressions.", "url": "#" },
+      { "name": "PBRC Cluster Performance Quickstart Handout", "type": "PDF", "desc": "Our internal execution manual detailing cluster configurations, partition structures, and data alignment file models.", "url": "#" }
+    ]
+  },
+  "Advanced": {
+    "label": "Advanced Omics & R",
+    "entries": [
+      { "name": "Bioconductor Models for Epidemiology", "type": "Course", "desc": "Self-paced training parameters targeting programmatic transcriptomics data wrangling and complex annotations arrays.", "url": "#" }
+    ]
+  }
+};
+
+// Database JSON Fetch
+fetch('databases.json')
+  .then(r => r.json())
+  .then(data => { DB_DATA = data; initDatabases(); })
+  .catch(() => {
+    document.getElementById('dbGrid').innerHTML = '<div class="no-results">Could not find databases.json setup in active deployment folder.</div>';
+  });
+
+// Learning JSON Fetch
+fetch('learning.json')
+  .then(r => r.json())
+  .then(data => { LEARNING_DATA = data; initLearning(); })
+  .catch(() => {
+    LEARNING_DATA = RUNTIME_LEARNING_DEFAULT;
+    initLearning();
+  });
+
+function initDatabases() {
+  const keys = Object.keys(DB_DATA);
+  currentTab = keys[0];
+  document.getElementById('statDbs').textContent = keys.reduce((s, k) => s + DB_DATA[k].entries.length, 0) + '+';
+  document.getElementById('statCats').textContent = keys.length;
+  
+  const tabsBar = document.getElementById('tabsBar');
+  tabsBar.innerHTML = '';
+  keys.forEach((key, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+    btn.dataset.tab = key;
+    btn.innerHTML = DB_DATA[key].label + ' <span class="tab-count">' + DB_DATA[key].entries.length + '</span>';
+    tabsBar.appendChild(btn);
+  });
+  
+  tabsBar.addEventListener('click', e => {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    document.querySelectorAll('#tabsBar .tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTab = btn.dataset.tab;
+    renderGrid();
+  });
+  
+  document.getElementById('searchInput').addEventListener('input', e => { searchVal = e.target.value; renderGrid(); });
+  renderGrid();
+}
+
+function renderGrid() {
+  const grid = document.getElementById('dbGrid');
+  const meta = document.getElementById('dbMeta');
+  if (!DB_DATA[currentTab]) return;
+  
+  let entries = DB_DATA[currentTab].entries;
+  if (searchVal) {
+    const q = searchVal.toLowerCase();
+    entries = entries.filter(e => e.name.toLowerCase().includes(q) || e.desc.toLowerCase().includes(q));
+  }
+  meta.textContent = entries.length + ' database' + (entries.length !== 1 ? 's' : '') + ' listed in ' + DB_DATA[currentTab].label;
+  if (!entries.length) { grid.innerHTML = '<div class="no-results">No registry matches standard prompt patterns.</div>'; return; }
+  
+  grid.innerHTML = '<div class="db-grid">' + entries.map(e => `
+    <a class="db-card" href="${e.url}" target="_blank" rel="noopener noreferrer">
+      <div>
+        <div class="db-card-top">
+          <span class="db-name">${e.name}</span>
+          <svg class="db-ext-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </div>
+        <div class="db-desc">${e.desc}</div>
+      </div>
+      ${e.pub ? `<div class="db-pub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>DOI: ${e.pub}</div>` : ''}
+    </a>`).join('') + '</div>';
+}
+
+function initLearning() {
+  const keys = Object.keys(LEARNING_DATA);
+  currentLearningTab = keys[0];
+  const tabsBar = document.getElementById('learningTabsBar');
+  tabsBar.innerHTML = '';
+  
+  keys.forEach((key, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+    btn.dataset.tab = key;
+    btn.innerHTML = LEARNING_DATA[key].label + ' <span class="tab-count">' + LEARNING_DATA[key].entries.length + '</span>';
+    tabsBar.appendChild(btn);
+  });
+  
+  tabsBar.addEventListener('click', e => {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    document.querySelectorAll('#learningTabsBar .tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentLearningTab = btn.dataset.tab;
+    renderLearningGrid();
+  });
+  
+  document.getElementById('learningSearchInput').addEventListener('input', e => { learningSearchVal = e.target.value; renderLearningGrid(); });
+  renderLearningGrid();
+}
+
+function renderLearningGrid() {
+  const grid = document.getElementById('learningGrid');
+  const meta = document.getElementById('learningMeta');
+  if (!LEARNING_DATA[currentLearningTab]) return;
+  
+  let entries = LEARNING_DATA[currentLearningTab].entries;
+  if (learningSearchVal) {
+    const q = learningSearchVal.toLowerCase();
+    entries = entries.filter(e => e.name.toLowerCase().includes(q) || e.desc.toLowerCase().includes(q) || e.type.toLowerCase().includes(q));
+  }
+  meta.textContent = entries.length + ' structural asset' + (entries.length !== 1 ? 's' : '') + ' localized in ' + LEARNING_DATA[currentLearningTab].label;
+  if (!entries.length) { grid.innerHTML = '<div class="no-results">No curated courses align with filter parameters.</div>'; return; }
+  
+  grid.innerHTML = '<div class="db-grid">' + entries.map(e => `
+    <a class="db-card" href="${e.url}" target="_blank" rel="noopener noreferrer">
+      <div>
+        <div class="media-badge ${e.type.toLowerCase()}">${e.type}</div>
+        <div class="db-card-top">
+          <span class="db-name">${e.name}</span>
+          <svg class="db-ext-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </div>
+        <div class="db-desc">${e.desc}</div>
+      </div>
+    </a>`).join('') + '</div>';
+}
+
+// Active link highlighting loop during page scrolling operations
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = ['databases', 'learning', 'contact'];
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= (el.offsetTop - 120)) current = id;
+  });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+}, { passive: true });
+
+/* Generative Helix Visualization Background Loop */
+(function() {
+  const canvas = document.getElementById('helixCanvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = canvas.offsetWidth*devicePixelRatio; canvas.height = canvas.offsetHeight*devicePixelRatio; ctx.scale(devicePixelRatio, devicePixelRatio); }
+  window.addEventListener('resize', resize); resize();
+  let t = 0;
+  (function draw() {
+    const W = canvas.offsetWidth, H = canvas.offsetHeight;
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2, amp=W*0.25, freq=0.01;
+    for (let i=0; i<160; i++) {
+      const y=(i/160)*H, phase=y*freq+t;
+      const x1=cx+Math.sin(phase)*amp, x2=cx+Math.sin(phase+Math.PI)*amp;
+      const alpha=0.1+0.4*Math.abs(Math.sin(phase));
+      if (i>0) {
+        const py=((i-1)/160)*H, px1=cx+Math.sin(py*freq+t)*amp, px2=cx+Math.sin(py*freq+t+Math.PI)*amp;
+        ctx.beginPath(); ctx.moveTo(px1,py); ctx.lineTo(x1,y); ctx.strokeStyle=`rgba(92,43,157,${alpha*0.4})`; ctx.lineWidth=1.5; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(px2,py); ctx.lineTo(x2,y); ctx.strokeStyle=`rgba(253,208,35,${alpha*0.3})`; ctx.lineWidth=1.5; ctx.stroke();
+      }
+    }
+    t+=0.006; requestAnimationFrame(draw);
+  })();
+})();
+
+/* JavaScript Dynamic Email Recovery & Obfuscation Handling */
+document.getElementById('core-email').addEventListener('click', function() {
+  const user = "sujoy.ghosh";
+  const domain = "pbrc.edu";
+  const cleanEmail = user + "@" + domain;
+  window.location.href = "mailto:" + cleanEmail;
+  this.textContent = cleanEmail;
+});
+</script>
+</body>
+</html>
