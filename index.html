@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bioinformatics & Computational Biology Core – PBRC</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --pbrc-purple: #461D7C;
+    --pbrc-purple-dark: #2D1250;
+    --pbrc-purple-light: #5C2B9D;
+    --lsu-gold: #FDD023;
+    --lsu-gold-hover: #E5BC1F;
+    --pbrc-gray: #999999;
+    --bg-dark: #110521;
+    --white: #FFFFFF;
+    --off: #F7F6F9;
+    --text: #211C27;
+    --muted: #615C68;
+    --border: #E5E2E9;
+    --card-shadow: 0 4px 20px rgba(20,7,36,0.08);
+    --radius: 12px;
+  }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; color: var(--text); background: var(--off); line-height: 1.65; font-size: 16px; }
+  
+  /* Top Navigation Header */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(17, 5, 33, 0.96); backdrop-filter: blur(8px); border-bottom: 2px solid var(--pbrc-purple); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; }
+  .nav-brand { font-size: 14px; font-weight: 600; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+  .nav-brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lsu-gold); flex-shrink: 0; }
+  .nav-links { display: flex; }
+  .nav-links a { font-size: 13px; color: rgba(255,255,255,0.7); text-decoration: none; padding: 0 1rem; height: 56px; display: flex; align-items: center; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--lsu-gold); }
+  .nav-links a.active { color: var(--white); border-bottom: 3px solid var(--lsu-gold); font-weight: 500; }
+
+  /* Hero Portal Gateway */
+  .hero-portal { min-height: calc(100vh - 56px); margin-top: 56px; background: var(--bg-dark); position: relative; overflow: hidden; display: flex; align-items: center; padding: 4rem 2rem; }
+  #helixCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.2; pointer-events: none; z-index: 1; }
+  .hero-portal-inner { max-width: 1200px; margin: 0 auto; width: 100%; position: relative; z-index: 2; display: flex; flex-direction: column; gap: 3.5rem; }
+  
+  .hero-portal-header { text-align: center; max-width: 800px; margin: 0 auto; }
+  .hero-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; color: var(--lsu-gold); text-transform: uppercase; margin-bottom: 1rem; }
+  .hero-title { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; color: var(--white); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .hero-title span { color: var(--lsu-gold); }
+  .hero-subtitle { font-size: 1.1rem; color: rgba(255,255,255,0.75); line-height: 1.6; }
+
+  /* 3-Column Top Grid Options */
+  .gateway-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; width: 100%; }
+  .gateway-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); padding: 2.25rem; text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+  .gateway-card:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--lsu-gold); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+  .gateway-card.highlighted { background: rgba(70, 29, 124, 0.25); border-color: rgba(253, 208, 35, 0.25); }
+  .gateway-card.highlighted:hover { border-color: var(--lsu-gold); background: rgba(70, 29, 124, 0.35); }
+  .card-icon-wrap { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .card-icon-wrap svg { width: 24px; height: 24px; color: var(--lsu-gold); }
+  .card-badge { font-size: 10px; font-weight: 700; background: rgba(253,208,35,0.15); color: var(--lsu-gold); padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .gateway-card h3 { font-size: 1.25rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+  .gateway-card p { font-size: 13.5px; color: rgba(255,255,255,0.65); line-height: 1.5; margin-bottom: 2rem; }
+  .gateway-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--lsu-gold); transition: color 0.15s; margin-top: auto; }
+  .gateway-card:hover .gateway-btn { color: var(--white); }
+  .gateway-btn svg { width: 14px; height: 14px; transition: transform 0.15s; }
+  .gateway-card:hover .gateway-btn svg { transform: translateX(4px); }
+
+  /* Main Workspace Boundaries */
+  .workspace-container { max-width: 1200px; margin: 0 auto; padding: 5rem 2rem; display: flex; flex-direction: column; gap: 5rem; }
+  
+  /* Pillar Workstation Containers */
+  .pillar-block { background: var(--white); border-radius: var(--radius); padding: 3rem; box-shadow: var(--card-shadow); border: 1px solid var(--border); }
+  .pillar-header { margin-bottom: 2rem; }
+  .pillar-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: var(--pbrc-purple); text-transform: uppercase; margin-bottom: 0.5rem; }
+  .pillar-title { font-size: 1.6rem; font-weight: 700; color: var(--text); letter-spacing: -0.015em; }
+  .pillar-desc { font-size: 14.5px; color: var(--muted); margin-top: 0.5rem; max-width: 750px; }
+  
+  /* Dynamic Inner Dashboard Operations */
+  .db-header-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .search-input-wrapper { position: relative; }
+  .search-input-wrapper input { font-size: 13.5px; padding: 11px 16px 11px 40px; border: 2px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); width: 280px; outline: none; transition: all 0.15s; }
+  .search-input-wrapper input:focus { border-color: var(--pbrc-purple); box-shadow: 0 0 0 3px rgba(70,29,124,0.06); }
+  .search-input-wrapper svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); pointer-events: none; }
+  
+  /* Modern Dynamic Back Navigation Action Trigger */
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--pbrc-purple); background: var(--off); border: 1px solid var(--border); padding: 8px 14px; border-radius: 6px; cursor: pointer; transition: all 0.15s; }
+  .back-btn:hover { background: var(--pbrc-purple); color: var(--white); border-color: var(--pbrc-purple); }
+  .back-btn svg { width: 14px; height: 14px; }
+
+  /* High-Contrast Light Pastel Category Portal Cards */
+  .category-gateway-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 1rem; width: 100%; }
+  .category-portal-card { 
+    background: var(--local-bg, var(--off)); 
+    border: 2px solid var(--local-border, var(--border)); 
+    border-radius: var(--radius); 
+    padding: 2rem 1.75rem; 
+    text-decoration: none; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    cursor: pointer; 
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
+  }
+  .category-portal-card:hover { 
+    border-color: var(--local-accent, var(--pbrc-purple)); 
+    background: var(--white); 
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 20px rgba(0,0,0,0.04); 
+  }
+  .category-portal-card h4 { 
+    font-size: 16px; 
+    font-weight: 700; 
+    color: var(--local-accent, var(--text)); 
+    margin-bottom: 0.5rem; 
+  }
+  .category-portal-card .cat-count-flag { 
+    font-size: 12px; 
+    font-weight: 600; 
+    color: var(--local-accent, var(--muted)); 
+    background: var(--local-badge-bg, rgba(0,0,0,0.04)); 
+    padding: 3px 10px; 
+    border-radius: 6px; 
+    width: max-content; 
+    margin-bottom: 2rem; 
+  }
+  .category-link-action { 
+    font-size: 13px; 
+    font-weight: 600; 
+    color: var(--local-accent, var(--pbrc-purple)); 
+    display: flex; 
+    align-items: center; 
+    gap: 5px; 
+  }
+  .category-link-action svg { width: 14px; height: 14px; transition: transform 0.15s; }
+  .category-portal-card:hover .category-link-action svg { transform: translateX(4px); }
+
+  /* Premium Multi-Color Downstream Asset Grids */
+  .db-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 1rem; width: 100%; }
+  .db-card { 
+    background: var(--white); 
+    border: 1px solid var(--border); 
+    border-left: 4px solid var(--local-accent, var(--pbrc-purple)); /* Bold Left Identity Strip */
+    border-radius: 6px; 
+    padding: 1.25rem; 
+    text-decoration: none; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s; 
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+  .db-card:hover { 
+    border-color: var(--local-accent, var(--pbrc-purple)); 
+    box-shadow: 0 4px 14px var(--local-shadow, rgba(70,29,124,0.08)); 
+    transform: translateY(-1px); 
+  }
+  .db-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 0.5rem; }
+  .db-name { font-size: 13.5px; font-weight: 600; color: var(--text); line-height: 1.35; }
+  .db-ext-icon { color: var(--muted); flex-shrink: 0; transition: color 0.15s; }
+  .db-card:hover .db-ext-icon { color: var(--local-accent, var(--pbrc-purple)); }
+  .db-desc { font-size: 12.5px; color: var(--muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: auto; }
+  .db-pub { margin-top: 0.75rem; font-size: 11px; color: #8A8493; display: flex; align-items: center; gap: 4px; border-top: 1px dashed var(--border); padding-top: 0.5rem; }
+  .db-pub svg { width: 10px; height: 10px; flex-shrink: 0; }
+  .db-meta { font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 1.25rem; display: block; }
+  .no-results { grid-column: 1/-1; text-align: center; padding: 2rem; font-size: 13.5px; color: var(--muted); }
+  
+  .suggest-trigger { font-size: 12.5px; color: var(--muted); margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border); width: 100%; }
+  .suggest-trigger a { color: var(--pbrc-purple); font-weight: 600; text-decoration: none; }
+  .suggest-trigger a:hover { text-decoration: underline; }
+  
+  .media-badge { display: inline-flex; align-items: center; font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 1px 6px; border-radius: 4px; letter-spacing: 0.04em; margin-bottom: 0.5rem; width: max-content; }
+  .media-badge.video { background: rgba(70,29,124,0.1); color: var(--pbrc-purple); }
+  .media-badge.pdf { background: rgba(97,92,104,0.1); color: var(--muted); }
+  .media-badge.course { background: rgba(229,188,31,0.15); color: var(--pbrc-purple-dark); border: 1px solid rgba(229,188,31,0.2); }
+  
+  /* Pillar 3 Workspace Box Configurations */
+  .intake-pillar { background: var(--bg-dark); border-color: rgba(70,29,124,0.4); color: var(--white); border-top: 4px solid var(--lsu-gold); }
+  .intake-pillar .pillar-title { color: var(--white); }
+  .intake-pillar .pillar-desc { color: rgba(255,255,255,0.7); }
+  
+  .workflow-timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 2rem 0; background: rgba(255,255,255,0.02); padding: 1.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
+  .timeline-node { display: flex; gap: 0.75rem; }
+  .node-num { font-size: 11px; font-weight: 700; background: var(--lsu-gold); color: var(--pbrc-purple-dark); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .node-content strong { color: var(--white); font-size: 14px; display: block; margin-bottom: 2px; }
+  .node-content p { font-size: 12.5px; color: rgba(255,255,255,0.55); line-height: 1.4; }
+  
+  .intake-actions { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; }
+  .intake-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--lsu-gold); color: var(--pbrc-purple-dark); font-size: 14px; font-weight: 600; text-decoration: none; padding: 13px 24px; border-radius: 6px; transition: background 0.15s, transform 0.1s; box-shadow: 0 4px 12px rgba(253,208,35,0.1); }
+  .intake-btn:hover { background: var(--lsu-gold-hover); transform: translateY(-1px); }
+  .intake-btn svg { width: 14px; height: 14px; }
+  .obfuscated-email { font-size: 13.5px; color: rgba(255,255,255,0.75); text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,0.3); padding-bottom: 2px; cursor: pointer; transition: color 0.15s; user-select: none; }
+  .obfuscated-email:hover { color: var(--lsu-gold); border-color: var(--lsu-gold); }
+  
+  /* Footer Layouts */
+  footer { background: var(--bg-dark); padding: 2.5rem 2rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-brand { font-size: 13.5px; font-weight: 600; color: var(--white); margin-bottom: 0.4rem; }
+  .footer-sub { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .footer-gold { color: var(--lsu-gold); font-weight: 500; }
+  
+  @media (max-width: 992px) {
+    .gateway-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .workflow-timeline { grid-template-columns: 1fr; gap: 1.25rem; }
+    .hero-portal { min-height: auto; padding: 3rem 1rem; }
+    .workspace-container { padding: 3rem 1rem; gap: 3.5rem; }
+    .pillar-block { padding: 2rem 1.5rem; }
+    .db-header-row { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .search-input-wrapper input { width: 100%; }
+    .intake-actions { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+    .intake-btn { width: 100%; justify-content: center; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#home"><span class="dot"></span>PBRC Bioinformatics Core</a>
+  <div class="nav-links">
+    <a href="#databases">Databases</a>
+    <a href="#learning">Learning Hub</a>
+    <a href="#contact">Consultation</a>
+  </div>
+</nav>
+
+<section class="hero-portal" id="home">
+  <canvas id="helixCanvas"></canvas>
+  <div class="hero-portal-inner">
+    
+    <div class="hero-portal-header">
+      <p class="hero-eyebrow">Pennington Biomedical Research Center</p>
+      <h1 class="hero-title">Bioinformatics &amp; <span>Computational</span> Biology Core</h1>
+      <p class="hero-subtitle">Powering metabolic and nutrition big data discoveries across the full research life cycle.</p>
+    </div>
+    
+    <div class="gateway-grid">
+      
+      <a href="#databases" class="gateway-card" onclick="resetDatabaseView()">
+        <div>
+          <div class="card-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12c0-3.3-4-6-9-6s-9 2.7-9 6 4 6 9 6 9-2.7 9-6z"/><path d="M4 12v4.5c0 3.3 4 5.5 9 5.5s9-2.2 9-5.5V12"/><path d="M4 6v4.5c0 3.3 4 5.5 9 5.5s9-2.2 9-5.5V6"/></svg>
+            <span class="card-badge" id="badgeDbs">Directory</span>
+          </div>
+          <h3>Omics Databases</h3>
+          <p>Explore curated public repositories tracking specialized single-cell sequencing and metabolic variant datasets.</p>
+        </div>
+        <span class="gateway-btn">Search &amp; Browse Directory <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+      </a>
+
+      <a href="#learning" class="gateway-card" onclick="resetLearningView()">
+        <div>
+          <div class="card-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+            <span class="card-badge">Training</span>
+          </div>
+          <h3>Educational Hub</h3>
+          <p>Access localized compute handouts, script pipelines, training videos, and self-paced biostatistics paths.</p>
+        </div>
+        <span class="gateway-btn">Explore Training Resources <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+      </a>
+
+      <a href="#contact" class="gateway-card highlighted">
+        <div>
+          <div class="card-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="card-badge" style="background: var(--lsu-gold); color: var(--pbrc-purple-dark)">Intake Form</span>
+          </div>
+          <h3>Core Collaboration</h3>
+          <p>Launch a project pipeline with our analytics group. One central application connects you to compute support.</p>
+        </div>
+        <span class="gateway-btn" style="color: var(--lsu-gold);">Request a Consultation <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+      </a>
+      
+    </div>
+  </div>
+</section>
+
+<div class="workspace-container">
+  
+  <section class="pillar-block" id="databases">
+    <div class="pillar-header">
+      <p class="pillar-eyebrow">Core Asset Array 01</p>
+      <h2 class="pillar-title">Omics Databases Registry</h2>
+      <p class="pillar-desc">Screen and select public domains tracking advanced computational datasets. Choose a categorical pipeline below to verify repositories.</p>
+    </div>
+    
+    <div class="db-header-row" id="dbHeaderRow" style="display: none;">
+      <button class="back-btn" onclick="resetDatabaseView()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Back to Categories
+      </button>
+      <div class="search-input-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Filter active database cards..." autocomplete="off">
+      </div>
+    </div>
+    <span class="db-meta" id="dbMeta">Loading databases directory...</span>
+    
+    <div id="dbGrid"></div>
+    
+    <div class="suggest-trigger">
+      Missing a preferred metabolic index? <a href="https://forms.office.com/r/YOUR_MICROSOFT_FORM_ID" target="_blank" rel="noopener noreferrer">Suggest a repository addition &rarr;</a>
+    </div>
+  </section>
+  
+  <section class="pillar-block" id="learning">
+    <div class="pillar-header">
+      <p class="pillar-eyebrow">Core Asset Array 02</p>
+      <h2 class="pillar-title">Training &amp; Educational Catalog</h2>
+      <p class="pillar-desc">Explore targeted system setups, pipeline tutorials, alignment handouts, and self-paced bioinformatics methodologies.</p>
+    </div>
+    
+    <div class="db-header-row" id="learningHeaderRow" style="display: none;">
+      <button class="back-btn" onclick="resetLearningView()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Back to Categories
+      </button>
+      <div class="search-input-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="learningSearchInput" placeholder="Filter training assets..." autocomplete="off">
+      </div>
+    </div>
+    <span class="db-meta" id="learningMeta">Loading learning courses...</span>
+    
+    <div id="learningGrid"></div>
+    
+    <div class="suggest-trigger">
+      Have a pipeline layout or tracking script to add? <a href="https://forms.office.com/r/YOUR_MICROSOFT_FORM_ID" target="_blank" rel="noopener noreferrer">Submit educational files &rarr;</a>
+    </div>
+  </section>
+  
+  <section class="pillar-block intake-pillar" id="contact">
+    <div class="pillar-header">
+      <p class="pillar-eyebrow" style="color: var(--lsu-gold);">Core Asset Array 03</p>
+      <h2 class="pillar-title">Project Consultation Intake</h2>
+      <p class="pillar-desc">Launch collaborations cleanly. A singular intake track provisions system environments, experimental designs, and method drafting components.</p>
+    </div>
+    
+    <div class="workflow-timeline">
+      <div class="timeline-node">
+        <span class="node-num">1</span>
+        <div class="node-content">
+          <strong>Single Form Submission</strong>
+          <p>Drop your metadata
